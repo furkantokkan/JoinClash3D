@@ -5,20 +5,20 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
     public static float runSpeed = 175f;
-    public static float slideSpeed = 50f;
     public static float playerZ;
-    public static float horizontalMove;
 
     private Animator anim;
 
     private bool canMove;
     Rigidbody rb;
 
-    float playerToPointDistance;
-    private Vector3 mousePos;
-    private Vector3 targetPos;
+    private Vector3 lastMousePos;
+    public float sensitivity = 0.16f, clampDelta = 42f;
+
+    public float bounds = 5;
+
  
-    void Start()
+    void Awake()
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
@@ -39,25 +39,27 @@ public class Movement : MonoBehaviour
 
         if (canMove)
         {
-            mousePos = Input.mousePosition;
-            mousePos.z = playerZ + 25;
-            var temp = Camera.main.ScreenToWorldPoint(mousePos);
 
             playerZ += runSpeed * 0.025f * Time.deltaTime;
-            
-            if (Mathf.Abs(temp.x - transform.position.x) <= 0.7f)
-            {
-                horizontalMove = transform.position.x;
-            }
-            else
-            {
-                horizontalMove += Mathf.Sign(temp.x) * slideSpeed * 0.025f * Time.deltaTime;
-            }
 
-            targetPos = new Vector3(horizontalMove, transform.position.y, playerZ);
-
-            transform.position = targetPos;
+            transform.position = new Vector3(transform.position.x, transform.position.y, playerZ);
         }
 
+    }
+    private void FixedUpdate()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            lastMousePos = Input.mousePosition;
+        }
+        if (Input.GetMouseButton(0))
+        {
+            Vector3 direction = lastMousePos - Input.mousePosition;
+            lastMousePos = Input.mousePosition;
+            direction = new Vector3(direction.x, 0, 0);
+
+            Vector3 moveForce = Vector3.ClampMagnitude(direction, clampDelta);
+            rb.AddForce((-moveForce * sensitivity - rb.velocity / 5f),ForceMode.VelocityChange);
+        } 
     }
 }
