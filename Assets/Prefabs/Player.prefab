@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 7372271622977248875}
   - component: {fileID: 7372271622977248873}
   - component: {fileID: 7372271622977248870}
-  m_Layer: 0
+  - component: {fileID: 1925743508}
+  m_Layer: 9
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -69,7 +70,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 84
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!65 &7372271622977248873
 BoxCollider:
@@ -79,7 +80,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7372271622977324162}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1.7770152, z: 1}
@@ -98,7 +99,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sensitivity: 0.16
   clampDelta: 42
-  turnSpeed: 20
+  turnSpeed: 15
+  maxX: 3.7
+  minXClaimOffset: 0.3
+  maxXClaimOffset: 1
+  minYClaimOffset: -1.5
+  maxYClaimOffset: 1.5
+--- !u!114 &1925743508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7372271622977324162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b644b54d762de5246be6297b55d9bd73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shield: {fileID: 7372271622977382802}
+  helmet: {fileID: 7372271622977376692}
+  armor: {fileID: 7372271622977395868}
 --- !u!1 &7372271622977324944
 GameObject:
   m_ObjectHideFlags: 0

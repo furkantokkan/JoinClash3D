@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerColor : MonoBehaviour
+public class PlayerSkin : MonoBehaviour
 {
     public GameObject shield;
     public GameObject helmet;

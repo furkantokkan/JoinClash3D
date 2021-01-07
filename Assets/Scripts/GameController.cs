@@ -12,6 +12,8 @@ public class GameController : MonoBehaviour
 
     public GameObject ground;
 
+    public List<GameObject> armyList = new List<GameObject>();
+
     private void Awake()
     {
         if (instance == null)

@@ -92,7 +92,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7372271622977324162}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 533bb6547d628954bbd3286842fc6612, type: 3}
   m_Name: 
@@ -100,6 +100,11 @@ MonoBehaviour:
   sensitivity: 0.16
   clampDelta: 42
   turnSpeed: 20
+  maxX: 3.7
+  minXClaimOffset: 0.3
+  maxXClaimOffset: 1
+  minYClaimOffset: -1.5
+  maxYClaimOffset: 1.5
 --- !u!114 &2056713295480329701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,6 +117,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b644b54d762de5246be6297b55d9bd73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shield: {fileID: 7372271622977382802}
+  helmet: {fileID: 7372271622977376692}
+  armor: {fileID: 7372271622977395868}
 --- !u!1 &7372271622977324944
 GameObject:
   m_ObjectHideFlags: 0
