@@ -5,7 +5,7 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
     private static float runSpeed = 175f;
-    public static float playerZ;
+    private float localPlayerZ;
     public static Vector3 moveForce;
     public static bool onTheEdge = false;
     private Animator anim;
@@ -29,7 +29,7 @@ public class Movement : MonoBehaviour
     public float maxZClaimOffset = 1.5f;
 
 
-    private float zOffset;
+    public float zOffset = 0.3f;
 
     Vector3 targetPos;
 
@@ -60,18 +60,21 @@ public class Movement : MonoBehaviour
         {
             if (this.gameObject == GameController.instance.armyList[0].gameObject)
             {
-                playerZ += runSpeed * 0.025f * Time.deltaTime;
                 startMove = true;
             }
 
             if (startMove)
             {
-                transform.position = new Vector3(transform.position.x, transform.position.y, playerZ + zOffset);
+                localPlayerZ += transform.position.z;
+                transform.position = new Vector3(transform.position.x, transform.position.y, (transform.position.z) + runSpeed * 0.025f * Time.deltaTime);
             }
 
-            TurnThePlayer();
+
 
         }
+
+
+        TurnThePlayer();
 
     }
 
@@ -120,6 +123,7 @@ public class Movement : MonoBehaviour
             {
                 rb.AddForce((-moveForce * sensitivity - rb.velocity / 5f), ForceMode.VelocityChange);
             }
+
         }
 
     }
@@ -128,45 +132,55 @@ public class Movement : MonoBehaviour
         GameController.instance.armyList.Remove(this.gameObject);
     }
 
-    private void OnCollisionEnter(Collision other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.collider.gameObject.tag == "Natural")
+        if (other.gameObject.tag == "Natural")
         {
-            AddClaimOffset(other);
+            // AddClaimOffset(other);
             other.gameObject.name = "Army Member";
-            other.collider.gameObject.GetComponent<Movement>().enabled = true;
-            other.collider.gameObject.GetComponent<PlayerSkin>().SetMaterial(GameController.instance.blue);
-            other.collider.gameObject.gameObject.tag = "Player";
-        }
-        if (other.collider.gameObject.tag == "Player")
-        {
-            targetPos = transform.position;
+            other.gameObject.GetComponent<Movement>().enabled = true;
+            other.gameObject.GetComponent<Movement>().startMove = true;
+            other.gameObject.GetComponent<PlayerSkin>().SetMaterial(GameController.instance.blue);
+            other.gameObject.gameObject.tag = "Player";
         }
     }
+
     void TurnThePlayer()
     {
         if (!onTheEdge)
         {
-            if (transform.position.x > lastTransform.x)
+            if (transform.position.x > lastTransform.x && canMove)
             {
                 //right
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 15, 0), turnSpeed * Time.deltaTime);
+                print("Right");
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 18, 0), Time.deltaTime * turnSpeed);
             }
-            else if (transform.position.x < lastTransform.x)
+            else if (transform.position.x < lastTransform.x && canMove)
             {
                 //left
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, -15, 0), turnSpeed * Time.deltaTime);
+                print("Left");
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, -18, 0), Time.deltaTime * turnSpeed);
             }
             else if (transform.position.x == lastTransform.x)
             {
                 //midle
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, 0), turnSpeed * Time.deltaTime);
+                print("Midle");
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, 0), Time.deltaTime * turnSpeed);
+            }
+            else
+            {
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, 0), Time.deltaTime * turnSpeed);
             }
         }
+        else
+        {
+            transform.rotation = Quaternion.identity;
+        }
     }
+    
     void AddClaimOffset(Collision other)
     {
-       
+
         if (!onTheEdge)
         {
             if (other.transform.position.x > transform.position.x)
@@ -174,10 +188,10 @@ public class Movement : MonoBehaviour
                 //on the right
                 zOffset = (float)Random.Range(minZClaimOffset, maxZClaimOffset);
 
-                  targetPos = Vector3.Lerp(transform.position, new Vector3(other.transform.localPosition.x + (float)Random.Range(minXClaimOffset, maxXClaimOffset),
-                    other.transform.position.y, other.transform.position.z + zOffset), getPositionSpeed * Time.deltaTime);
+                targetPos = Vector3.Lerp(transform.position, new Vector3(other.transform.localPosition.x + (float)Random.Range(minXClaimOffset, maxXClaimOffset),
+                  other.transform.position.y, other.transform.position.z + zOffset), getPositionSpeed * Time.deltaTime);
 
-              
+                other.transform.position = targetPos;
             }
             else if (other.transform.position.x < transform.position.x)
             {
@@ -209,7 +223,7 @@ public class Movement : MonoBehaviour
                 //on the left
                 zOffset = (float)Random.Range(minZClaimOffset, maxZClaimOffset);
 
-                targetPos =  new Vector3(other.transform.localPosition.x + (float)Random.Range(minXClaimOffset, maxXClaimOffset),
+                targetPos = new Vector3(other.transform.localPosition.x + (float)Random.Range(minXClaimOffset, maxXClaimOffset),
                     other.transform.position.y, other.transform.position.z + zOffset);
 
                 other.transform.position = targetPos;

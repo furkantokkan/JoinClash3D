@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7372271622977619270}
   - component: {fileID: 7372271622986815694}
   - component: {fileID: 7372271622977248875}
-  - component: {fileID: 7372271622977248873}
+  - component: {fileID: 7351527565419620805}
   - component: {fileID: 7372271622977248870}
   - component: {fileID: 1925743508}
   m_Layer: 9
@@ -72,8 +72,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
---- !u!65 &7372271622977248873
-BoxCollider:
+--- !u!136 &7351527565419620805
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -82,9 +82,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1.7770152, z: 1}
-  m_Center: {x: 0, y: 0.92178226, z: 0}
+  m_Radius: 0.3286176
+  m_Height: 1.7817371
+  m_Direction: 1
+  m_Center: {x: 0.00961414, y: 0.75954664, z: 0}
 --- !u!114 &7372271622977248870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -99,12 +100,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sensitivity: 0.16
   clampDelta: 42
-  turnSpeed: 15
+  turnSpeed: 20
   maxX: 3.7
   minXClaimOffset: 0.3
   maxXClaimOffset: 1
-  minYClaimOffset: -1.5
-  maxYClaimOffset: 1.5
+  minZClaimOffset: 1
+  maxZClaimOffset: 2
 --- !u!114 &1925743508
 MonoBehaviour:
   m_ObjectHideFlags: 0

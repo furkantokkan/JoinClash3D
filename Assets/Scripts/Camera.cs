@@ -9,7 +9,8 @@ public class Camera : MonoBehaviour
     public float cameraFollowSpeed = 15f;
     void LateUpdate()
     {
-        float cameraZ = Movement.playerZ - cameraDistance;
+
+        float cameraZ = GameController.instance.armyList[0].transform.position.z - cameraDistance;
         transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, cameraHeight,cameraZ), cameraFollowSpeed * Time.deltaTime);
     }
 
