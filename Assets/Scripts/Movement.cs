@@ -41,7 +41,7 @@ public class Movement : MonoBehaviour
     }
     private void Start()
     {
-        GameController.instance.armyList.Add(this.gameObject);
+       // GameController.instance.armyList.Add(this.gameObject);
     }
     // Update is called once per frame
     void Update()
@@ -50,10 +50,12 @@ public class Movement : MonoBehaviour
         if (TouchButton.IsPressing())
         {
             canMove = true;
+            anim.SetBool("Run", true);
         }
         else
         {
             canMove = false;
+            anim.SetBool("Run", false);
         }
 
         if (canMove)

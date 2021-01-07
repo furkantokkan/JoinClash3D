@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour
     public GameObject ground;
 
     public List<GameObject> armyList = new List<GameObject>();
+    public List<GameObject> enemyList = new List<GameObject>();
 
     private void Awake()
     {
@@ -28,12 +29,12 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
