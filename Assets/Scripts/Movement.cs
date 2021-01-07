@@ -6,7 +6,8 @@ public class Movement : MonoBehaviour
 {
     public static float runSpeed = 175f;
     public static float playerZ;
-
+    public static Vector3 moveForce;
+    public static bool onTheEdge = false;
     private Animator anim;
 
     private bool canMove;
@@ -16,6 +17,8 @@ public class Movement : MonoBehaviour
     private Vector3 lastTransform;
     public float sensitivity = 0.16f, clampDelta = 42f;
     public float turnSpeed = 15;
+
+    public float maxX = 3.7f;
 
  
     void Awake()
@@ -64,6 +67,7 @@ public class Movement : MonoBehaviour
     }
     private void FixedUpdate()
     {
+
         if (Input.GetMouseButtonDown(0))
         {
             lastMousePos = Input.mousePosition;
@@ -75,8 +79,46 @@ public class Movement : MonoBehaviour
             lastMousePos = Input.mousePosition;
             lastTransform = transform.position;
             direction = new Vector3(direction.x, 0, 0);
-            Vector3 moveForce = Vector3.ClampMagnitude(direction, clampDelta);
-            rb.AddForce((-moveForce * sensitivity - rb.velocity / 5f),ForceMode.VelocityChange);
+            moveForce = Vector3.ClampMagnitude(direction, clampDelta);
+
+            if (transform.position.x >= maxX)
+            {
+                if (moveForce.x < 0)
+                {
+                    onTheEdge = true;
+                }
+                else
+                {
+                    onTheEdge = false;
+                }
+            }
+            else if (transform.position.x <= -maxX)
+            {
+                if (moveForce.x > 0)
+                {
+                    onTheEdge = true;
+                }
+                else
+                {
+                    onTheEdge = false;
+                }
+            }
+
+            if (!onTheEdge)
+            {
+                rb.AddForce((-moveForce * sensitivity - rb.velocity / 5f), ForceMode.VelocityChange);
+            }
+        }
+
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.collider.gameObject.tag == "Natural")
+        {
+            other.collider.gameObject.GetComponent<Movement>().enabled = true;
+            other.collider.gameObject.GetComponent<PlayerColor>().SetMaterial(GameController.instance.blue);
+            other.collider.gameObject.gameObject.tag = "Player";
         }
     }
 }

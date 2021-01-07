@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 7372271622977248875}
   - component: {fileID: 7372271622977248873}
   - component: {fileID: 7372271622977248870}
+  - component: {fileID: 2056713295480329701}
   m_Layer: 0
   m_Name: Natural
-  m_TagString: Untagged
+  m_TagString: Natural
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -98,7 +99,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sensitivity: 0.16
   clampDelta: 42
-  bounds: 5
+  turnSpeed: 20
+--- !u!114 &2056713295480329701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7372271622977324162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b644b54d762de5246be6297b55d9bd73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7372271622977324944
 GameObject:
   m_ObjectHideFlags: 0

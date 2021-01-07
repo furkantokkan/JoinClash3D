@@ -4,7 +4,26 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public static GameController instance;
+
+    public Material blue;
+    public Material red;
+    public Material grey;
+
+    public GameObject ground;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+    }
+
     void Start()
     {
         
