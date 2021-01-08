@@ -134,7 +134,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7372271622977324162}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 533bb6547d628954bbd3286842fc6612, type: 3}
   m_Name: 
@@ -170,14 +170,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7372271622977324162}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed87730d371d9d543907887f69f072f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   attackDistance: 1.6
   attackRate: 1
-  chargeDistance: 8
+  chargeDistance: 30
   turnSpeed: 10
   moveSpeed: 3
 --- !u!114 &2899941578354480501

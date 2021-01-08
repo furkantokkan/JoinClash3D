@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 7372271622977248875}
   - component: {fileID: 4042735819081115478}
   - component: {fileID: -1362480982519611108}
-  - component: {fileID: 7372271622977248870}
   - component: {fileID: -2814703507181892853}
   - component: {fileID: 5088549631179673787}
   - component: {fileID: 2467685895329951825}
@@ -112,27 +111,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &7372271622977248870
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7372271622977324162}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 533bb6547d628954bbd3286842fc6612, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sensitivity: 0.16
-  clampDelta: 42
-  turnSpeed: 15
-  maxX: 3.7
-  minXClaimOffset: 0.3
-  maxXClaimOffset: 1
-  minZClaimOffset: -1.5
-  maxZClaimOffset: 1.5
-  zOffset: 0.3
 --- !u!114 &-2814703507181892853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,7 +140,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackDistance: 1.6
   attackRate: 1
-  chargeDistance: 8
+  chargeDistance: 15
   turnSpeed: 10
   moveSpeed: 3
 --- !u!114 &2467685895329951825

@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     public static GameController instance;
-
+    public static bool startFight;
     public Material blue;
     public Material red;
     public Material grey;

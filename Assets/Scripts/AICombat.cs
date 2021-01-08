@@ -35,8 +35,6 @@ public class AICombat : MonoBehaviour
     float distanceToTarget;
     private void Awake()
     {
-        GetComponent<Rigidbody>().isKinematic = true;
-        GetComponent<Movement>().enabled = false;
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
     }
@@ -47,10 +45,7 @@ public class AICombat : MonoBehaviour
         if (gameObject.tag == "Enemy")
         {
             GameController.instance.enemyList.Add(this.gameObject);
-        }
-        else if (gameObject.tag == "Player")
-        {
-            GameController.instance.armyList.Add(this.gameObject);
+            GetComponent<Rigidbody>().isKinematic = true;
         }
 
         UpdateList();
@@ -59,19 +54,22 @@ public class AICombat : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        SetTarget();
-        SetState();
-        if (attackList.Count != 0)
+        if (GameController.startFight)
         {
-            ExecuteState();
-        }
-        else
-        {
-            anim.SetBool("Run", false);
-            anim.ResetTrigger("Attack");
-            anim.SetBool("Dance", true);
-            agent.isStopped = true;
+            SetTarget();
+            SetState();
+            if (attackList.Count != 0)
+            {
+                ExecuteState();
+            }
+            else
+            {
+                anim.SetBool("Run", false);
+                anim.ResetTrigger("Attack");
+                anim.SetBool("Dance", true);
+                agent.isStopped = true;
 
+            }
         }
     }
 

@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.AI;
 public class Movement : MonoBehaviour
 {
+    
     private static float runSpeed = 175f;
     private float localPlayerZ;
     public static Vector3 moveForce;
@@ -38,10 +39,14 @@ public class Movement : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
+        GetComponent<AICombat>().enabled = false;
+        GetComponent<Rigidbody>().isKinematic = false;
+        GetComponent<NavMeshAgent>().enabled = false;
+
     }
     private void Start()
     {
-       // GameController.instance.armyList.Add(this.gameObject);
+       GameController.instance.armyList.Add(this.gameObject);
     }
     // Update is called once per frame
     void Update()
@@ -131,7 +136,10 @@ public class Movement : MonoBehaviour
     }
     private void OnDisable()
     {
-        GameController.instance.armyList.Remove(this.gameObject);
+        if (!GameController.startFight)
+        {
+            GameController.instance.armyList.Remove(this.gameObject);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
