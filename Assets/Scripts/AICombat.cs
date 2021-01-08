@@ -20,7 +20,7 @@ public class AICombat : MonoBehaviour
     public float turnSpeed = 10f;
     public float moveSpeed = 3f;
 
-    private Transform target;
+    internal Transform target;
 
     private Animator anim;
     private NavMeshAgent agent;
@@ -31,7 +31,8 @@ public class AICombat : MonoBehaviour
 
     private List<GameObject> attackList = new List<GameObject>();
 
-    float targetDistance;
+    float enemyDistance;
+    float distanceToTarget;
     private void Awake()
     {
         GetComponent<Rigidbody>().isKinematic = true;
@@ -60,7 +61,18 @@ public class AICombat : MonoBehaviour
     {
         SetTarget();
         SetState();
-        ExecuteState();
+        if (attackList.Count != 0)
+        {
+            ExecuteState();
+        }
+        else
+        {
+            anim.SetBool("Run", false);
+            anim.ResetTrigger("Attack");
+            anim.SetBool("Dance", true);
+            agent.isStopped = true;
+
+        }
     }
 
     private void OnDisable()
@@ -89,15 +101,15 @@ public class AICombat : MonoBehaviour
 
     void SetTarget()
     {
-        targetDistance = float.MaxValue;
+        enemyDistance = float.MaxValue;
 
         foreach (GameObject army in attackList)
         {
             float distanceToEnemy = Vector3.Distance(army.transform.position, this.transform.position);
 
-            if (distanceToEnemy < targetDistance)
+            if (distanceToEnemy < enemyDistance)
             {
-                targetDistance = distanceToEnemy;
+                enemyDistance = distanceToEnemy;
                 target = army.transform;
             }
         }
@@ -105,7 +117,10 @@ public class AICombat : MonoBehaviour
 
     void SetState()
     {
-        float distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
+        if (target != null)
+        {
+            distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
+        }
 
         if (distanceToTarget <= chargeDistance && distanceToTarget > attackDistance)
         {
@@ -127,9 +142,7 @@ public class AICombat : MonoBehaviour
         switch (currentState)
         {
             case State.Idle:
-                target = null;
-                anim.SetBool("Run", false);
-                agent.isStopped = true;
+                Idle();
                 break;
             case State.Charge:
                 Charge();
@@ -137,9 +150,14 @@ public class AICombat : MonoBehaviour
             case State.Attack:
                 Attack();
                 break;
-            case State.None:
-                break;
         }
+    }
+
+    void Idle()
+    {
+        target = null;
+        anim.SetBool("Run", false);
+        agent.isStopped = true;
     }
 
     void Attack()
@@ -180,4 +198,5 @@ public class AICombat : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(targetLookPosition - transform.position),
             turnSpeed * Time.deltaTime);
     }
+
 }
