@@ -21,6 +21,7 @@ public class AICombat : MonoBehaviour
     public float moveSpeed = 3f;
 
     private Transform target;
+
     private Animator anim;
     private NavMeshAgent agent;
 
@@ -29,6 +30,8 @@ public class AICombat : MonoBehaviour
     private State currentState = State.None;
 
     private List<GameObject> attackList = new List<GameObject>();
+
+    float targetDistance;
     private void Awake()
     {
         GetComponent<Rigidbody>().isKinematic = true;
@@ -38,8 +41,8 @@ public class AICombat : MonoBehaviour
     }
     void Start()
     {
-        agent.avoidancePriority = Random.Range(1, 51);
-
+        agent.avoidancePriority = 1;
+        agent.stoppingDistance = attackDistance;
         if (gameObject.tag == "Enemy")
         {
             GameController.instance.enemyList.Add(this.gameObject);
@@ -48,11 +51,14 @@ public class AICombat : MonoBehaviour
         {
             GameController.instance.armyList.Add(this.gameObject);
         }
+
+        UpdateList();
     }
 
     // Update is called once per frame
     void Update()
     {
+        SetTarget();
         SetState();
         ExecuteState();
     }
@@ -69,7 +75,7 @@ public class AICombat : MonoBehaviour
         }
     }
 
-    void SetState()
+    void UpdateList()
     {
         if (this.gameObject.tag == "Enemy")
         {
@@ -79,33 +85,41 @@ public class AICombat : MonoBehaviour
         {
             attackList = GameController.instance.enemyList;
         }
+    }
+
+    void SetTarget()
+    {
+        targetDistance = float.MaxValue;
 
         foreach (GameObject army in attackList)
         {
-            float distanceToEnemy = Vector3.Distance(transform.position, army.transform.position);
+            float distanceToEnemy = Vector3.Distance(army.transform.position, this.transform.position);
 
-            if (distanceToEnemy > attackDistance && distanceToEnemy <= chargeDistance)
+            if (distanceToEnemy < targetDistance)
             {
-                currentState = State.Charge;
-                target = null;
+                targetDistance = distanceToEnemy;
                 target = army.transform;
             }
-            else if (distanceToEnemy <= attackDistance + 0.15f)
-            {
-                if (target == null)
-                {
-                    target = army.transform;
-                }
-                else
-                {
-                    currentState = State.Attack;
-                }
-            }
-            else
-            {
-                currentState = State.Idle;
-            }
         }
+    }
+
+    void SetState()
+    {
+        float distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
+
+        if (distanceToTarget <= chargeDistance && distanceToTarget > attackDistance)
+        {
+            currentState = State.Charge;
+        }
+        else if (distanceToTarget <= attackDistance)
+        {
+            currentState = State.Attack;
+        }
+        else if (distanceToTarget > attackDistance && distanceToTarget > chargeDistance)
+        {
+            currentState = State.Idle;
+        }
+
     }
 
     void ExecuteState()
@@ -113,8 +127,9 @@ public class AICombat : MonoBehaviour
         switch (currentState)
         {
             case State.Idle:
-                agent.isStopped = true;
                 target = null;
+                anim.SetBool("Run", false);
+                agent.isStopped = true;
                 break;
             case State.Charge:
                 Charge();
@@ -129,13 +144,11 @@ public class AICombat : MonoBehaviour
 
     void Attack()
     {
-        if (target != null)
+        if (target != null && currentState != State.Charge || currentState != State.Idle)
         {
             agent.isStopped = true;
             anim.SetBool("Run", false);
-            Vector3 targetLookPosition = new Vector3(target.position.x, transform.position.y, target.position.z);
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(targetLookPosition - transform.position),
-                turnSpeed * Time.deltaTime);
+            LookAtTheEnemy();
             if (currentAttackTime >= attackRate)
             {
                 print("Attack");
@@ -150,13 +163,21 @@ public class AICombat : MonoBehaviour
     }
     void Charge()
     {
-        if (target != null)
+        if (target != null && currentState != State.Attack || currentState != State.Idle)
         {
             print("Charge");
+            LookAtTheEnemy();
             anim.SetBool("Run", true);
             agent.isStopped = false;
             agent.speed = moveSpeed;
             agent.SetDestination(target.position);
         }
+    }
+
+    void LookAtTheEnemy()
+    {
+        Vector3 targetLookPosition = new Vector3(target.position.x, transform.position.y, target.position.z);
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(targetLookPosition - transform.position),
+            turnSpeed * Time.deltaTime);
     }
 }
