@@ -154,6 +154,7 @@ public class AICombat : MonoBehaviour
     void Idle()
     {
         target = null;
+        anim.ResetTrigger("Attack");
         anim.SetBool("Run", false);
         agent.isStopped = true;
     }
@@ -183,6 +184,7 @@ public class AICombat : MonoBehaviour
         {
             print("Charge");
             LookAtTheEnemy();
+            anim.ResetTrigger("Attack");
             anim.SetBool("Run", true);
             agent.isStopped = false;
             agent.speed = moveSpeed;

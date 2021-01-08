@@ -87,7 +87,10 @@ public class Movement : MonoBehaviour
 
     private void FixedUpdate()
     {
-
+        if (!canMove)
+        {
+            return;
+        }
         if (Input.GetMouseButtonDown(0))
         {
             lastMousePos = Input.mousePosition;
